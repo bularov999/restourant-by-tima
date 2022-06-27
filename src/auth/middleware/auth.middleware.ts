@@ -8,7 +8,6 @@ import { jwtConstants } from '../constants/constants';
 export class AuthMiddleware implements NestMiddleware {
     constructor(private readonly userService: UserService) { }
     async use(req: RequestExpress, res: Response, next: NextFunction) {
-        console.log(req.headers.authorization)
         if (!req.headers.authorization) {
             req.user = null
             next()
