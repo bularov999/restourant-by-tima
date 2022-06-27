@@ -15,10 +15,14 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from './file.service';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('file')
 export class FileController {
     constructor(private service: FileService) { }
+    @ApiTags('File controller')
+    @ApiOperation({summary: 'upload file'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)
@@ -28,7 +32,9 @@ export class FileController {
         return await this.service.create(file);
     }
 
-
+    @ApiTags('File controller')
+    @ApiOperation({summary: 'updating file'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)
@@ -40,7 +46,9 @@ export class FileController {
     ) {
         return await this.service.update(name, file);
     }
-    
+    @ApiTags('File controller')
+    @ApiOperation({summary: 'get File'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)

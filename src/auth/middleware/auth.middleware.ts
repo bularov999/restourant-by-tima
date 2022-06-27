@@ -8,15 +8,17 @@ import { jwtConstants } from '../constants/constants';
 export class AuthMiddleware implements NestMiddleware {
     constructor(private readonly userService: UserService) { }
     async use(req: RequestExpress, res: Response, next: NextFunction) {
+        console.log(req.headers.authorization)
         if (!req.headers.authorization) {
             req.user = null
             next()
             return
         }
-        const token = req.headers.authorization
+        const token = req.headers.authorization.split(' ')[1].slice(0, -1)
         try {
-            const decode = verify(JSON.parse(token), jwtConstants.secret)
+            const decode = verify(token, jwtConstants.secret)
             const user = await this.userService.findOne({where: {id: decode.sub}})
+            console.log(user)
             delete user.password
             req.user = user 
             next()

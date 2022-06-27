@@ -5,11 +5,14 @@ import { AuthGuard } from "src/auth/guards/authGuard.guard";
 import { Roles } from "src/common/decorators/roles.decorator";
 import { UserEntity } from "./entity/user.entity";
 import { UserService } from "./user.service";
-import { ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) {}
+    @ApiTags('user controller')
+    @ApiOperation({summary: 'find user by his id'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)
@@ -18,19 +21,14 @@ export class UserController {
     async findUserById(id: string): Promise<UserEntity> {
         return await this.userService.findOne({where: {id}})
     }
+    @ApiTags('user controller')
+    @ApiOperation({summary: 'find all users'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)
     @Get('find-all')
     async findAllUsers(): Promise<UserEntity[]> {
         return await this.userService.findAllUsers()
-    }
-
-    @UseGuards(AuthGuard)
-    @UseGuards(RolesGuard)
-    @Roles(UserRoleTypes.ADMIN)
-    @Get('user')
-    user() {
-        return 'user'
     }
 }

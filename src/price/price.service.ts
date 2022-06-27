@@ -11,7 +11,7 @@ import { Repository, In, InsertResult, UpdateResult } from 'typeorm';
 export class PriceService {
     constructor(
         @InjectRepository(PriceEntity) private readonly priceRepository: Repository<PriceEntity>,
-        @Inject(forwardRef(() => MenuService) )private readonly menuService: MenuService
+        @Inject(forwardRef(() => MenuService)) private readonly menuService: MenuService
     ) { }
     async createPrice(createPriceDto: CreatePriceDto[], menuId: number): Promise<PriceEntity[]> {
         const menu = await this.menuService.getOneMenuBy(menuId)
@@ -19,8 +19,7 @@ export class PriceService {
         const newInstace = instance.map((item) => {
             return { ...item, menu }
         })
-        const price = await this.priceRepository.save(newInstace)
-        return price
+        return await this.priceRepository.save(newInstace)
     }
 
     async deletePrice(menuId: number) {
@@ -28,20 +27,18 @@ export class PriceService {
         return deletedPrice
     }
     async getPricesByIdAndSize(menuIds: number[], sizes: number[]): Promise<PriceEntity[]> {
-        const price = await this.priceRepository.find({
+        return await this.priceRepository.find({
             where: {
                 id: In(menuIds),
                 size: In(sizes)
             }
         })
-        return price
     }
     async updateOnePrice(updateOnePriceDto: UpdateOnePriceDto): Promise<UpdateResult> {
-        const price = await this.priceRepository.update(updateOnePriceDto.id,
+        return await this.priceRepository.update(updateOnePriceDto.id,
             {
                 size: updateOnePriceDto.size,
                 price: updateOnePriceDto.price
             })
-        return price
     }
 }

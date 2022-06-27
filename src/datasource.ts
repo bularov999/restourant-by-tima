@@ -1,9 +1,8 @@
-import { join } from 'path';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv'
 dotenv.config()
-
+console.log(process.env.POSTGRES_HOST)
 export default new DataSource({
     type: 'postgres',
     host: process.env.POSTGRES_HOST,
@@ -12,7 +11,8 @@ export default new DataSource({
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DATABASE,
     namingStrategy: new SnakeNamingStrategy(),
-    entities: ["src/**/**/*.entity{.js, .ts}"],
+    synchronize: true,
+    entities: ["src/**/entity/*.entity{.js}"],
     migrations: ["./src/migration/*.ts"],
     migrationsTableName: "migrations"
 })

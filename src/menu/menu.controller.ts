@@ -8,11 +8,14 @@ import { MenuService } from './menu.service';
 import { Body, Controller, Delete, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { MenuEntity } from './entity/menu.entity';
 import { Roles } from 'src/common/decorators/roles.decorator';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @Controller('menu')
 export class MenuController {
     constructor(private readonly menuService: MenuService) { }
+    @ApiTags('Menu controller')
+    @ApiOperation({summary: 'create menu (ADMIN)'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)
@@ -22,6 +25,9 @@ export class MenuController {
         return await this.menuService.createMenu(createMenuDto)
     }
 
+    @ApiTags('Menu controller')
+    @ApiOperation({summary: 'update Menu (ADMIN)'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)
@@ -31,6 +37,9 @@ export class MenuController {
         return await this.menuService.updateMenu(updateMenuDto)
     }
     
+    @ApiTags('Menu controller')
+    @ApiOperation({summary: 'delete Menu (ADMIN)'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)

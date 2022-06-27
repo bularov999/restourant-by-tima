@@ -9,11 +9,15 @@ import { BookingDto } from './dto/bookingDto.dto';
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { UserDecorator } from 'src/user/decorator/userDecorator.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
-import { ApiBody, ApiParam } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @Controller('booking')
 export class BookingController {
     constructor(private readonly bookingService: BookingService) { }
+
+    @ApiTags('booking')
+    @ApiOperation({summary: 'get all bookings'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)
@@ -22,6 +26,18 @@ export class BookingController {
         return await this.bookingService.getAllBookings()
     }
 
+    @ApiTags('booking')
+    @ApiOperation({summary: 'get bookings by user'})
+    @ApiBearerAuth('defaultBearerAuth')
+    @UseGuards(AuthGuard)
+    @Get('get-booking/:userId')
+    async getBookingByUserId(@Param('userId') userId: number) {
+        return await this.bookingService.getBookingByUserId(userId)
+    }
+
+    @ApiTags('booking')
+    @ApiOperation({summary: 'create new booking'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @Post('create')
     @ApiBody({type: BookingDto})
@@ -29,7 +45,9 @@ export class BookingController {
         return await this.bookingService.createBooking(user, bookingDto)
     }
 
-
+    @ApiTags('booking')
+    @ApiOperation({summary: 'denie user booking by admin (ADMIN)'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)
@@ -38,6 +56,9 @@ export class BookingController {
         return await this.bookingService.denieBooking(bookingId)
     }
 
+    @ApiTags('booking')
+    @ApiOperation({summary: 'approve user booking by admin (ADMIN)'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)
@@ -47,7 +68,9 @@ export class BookingController {
         return await this.bookingService.approveBooking(bookingId)
     }
 
-
+    @ApiTags('booking')
+    @ApiOperation({summary: 'delete user booking by id (ADMIN)'})
+    @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
     @Roles(UserRoleTypes.ADMIN)

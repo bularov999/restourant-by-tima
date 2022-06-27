@@ -10,16 +10,13 @@ export class UserService {
     constructor(@InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>) {
      }
     async findOne(data: any): Promise<UserEntity> {
-        const user = await this.userRepository.findOne(data)
-        return user
+        return  await this.userRepository.findOne(data)
     }
     async createUser(registrationDto: RegistrationDto): Promise<UserEntity> {
         const newUser =  this.userRepository.create(registrationDto)
-        await this.userRepository.save(newUser)
-        return newUser
+        return await this.userRepository.save(newUser)
     }
     async findAllUsers(): Promise<UserEntity[]> {
-        const users: UserEntity[] = await this.userRepository.find()
-        return users
+        return await this.userRepository.find()
     }
 }

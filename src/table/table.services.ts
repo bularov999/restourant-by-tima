@@ -12,33 +12,28 @@ export class TableService {
     constructor(@InjectRepository(TableEntity) private readonly tableRepository: Repository<TableEntity>) { }
 
     async blockTable(id: number): Promise<UpdateResult> {
-        const res = await this.tableRepository.update(id, { status: TableStatusTypes.BOOKED })
-        return res
+        return await this.tableRepository.update(id, { status: TableStatusTypes.BOOKED })
     }
     async unblockTable(id: number): Promise<UpdateResult> {
-        const res = await this.tableRepository.update(id, { status: TableStatusTypes.AVAILABLE })
-        return res
+        return await this.tableRepository.update(id, { status: TableStatusTypes.AVAILABLE })
     }
     async deleteTable(id: number): Promise<DeleteResult> {
-        const res = await this.tableRepository.delete(id)
-        return res
+        return await this.tableRepository.delete(id)
+        
     }
 
     async createTable(createTableDto: CreateTableDto): Promise<TableEntity> {
         const table = this.tableRepository.create(createTableDto)
-        const res = await this.tableRepository.save(table)
-        return res
+        return await this.tableRepository.save(table)
     }
 
     async updateTable(updateTableDto: UpdateTableDto): Promise<TableEntity> {
         const table = await this.tableRepository.findOneBy({
             id: updateTableDto.id,
         });
-        const newTable = await  this.tableRepository.save({
+        return await this.tableRepository.save({
             ...table,
             ...updateTableDto,
         });
-
-        return newTable
     }
 }

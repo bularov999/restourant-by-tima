@@ -14,31 +14,33 @@ export class BookingService {
         const booking = this.bookingRepository.create(bookingDto)
         booking.user = user
         booking.table = bookingDto.table
-        await this.bookingRepository.save(booking)
-        return booking
+        return await this.bookingRepository.save(booking)
+
     }
     async denieBooking(id: number): Promise<UpdateResult> {
         const booking = await this.bookingRepository.findOne({
             where: { id },
         })
         if (!booking) throw ApiError.notFound('booking not found')
-        const updatedBooking = await this.bookingRepository.update({ id }, { status: BookingStatusTypes.DENIED })
-        return updatedBooking
+        return await this.bookingRepository.update({ id }, { status: BookingStatusTypes.DENIED })
+
     }
     async approveBooking(id: number) {
         const booking = await this.bookingRepository.findOne({
             where: { id },
         })
         if (!booking) throw ApiError.notFound('booking not found')
-        const updatedBooking = await this.bookingRepository.update({ id }, { status: BookingStatusTypes.APPROVED })
-        return updatedBooking
+        return await this.bookingRepository.update({ id }, { status: BookingStatusTypes.APPROVED })
+
     }
     async deleteBooking(id: number): Promise<DeleteResult> {
-        const booking = await this.bookingRepository.delete(id)
-        return booking
+        return await this.bookingRepository.delete(id)
+
     }
     async getAllBookings(): Promise<BookingEntity[]> {
-        const bookings: BookingEntity[] = await this.bookingRepository.find()
-        return bookings
+        return await this.bookingRepository.find()
+    }
+    async getBookingByUserId(userId: number) {
+        return await this.bookingRepository.find({ where: { user: { id: userId } } })
     }
 }

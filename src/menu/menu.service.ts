@@ -18,30 +18,26 @@ export class MenuService {
     async createMenu(menuDto: CreateMenuDto): Promise<MenuEntity> {
         menuDto.pictures = await this.fileService.findFilesById({ where: { id: In(menuDto.pictureIds) } });
         const instance = this.menuRepository.create(menuDto)
-        const menu: MenuEntity = await this.menuRepository.save(instance)
-        return menu
+        return await this.menuRepository.save(instance)
+
     }
     async updateMenu(updateMenuDto: UpdateMenuDto): Promise<MenuEntity> {
         const oldMenu = await this.menuRepository.findOneBy({ id: updateMenuDto.id })
         updateMenuDto.pictures = await this.fileService.findFilesById({ where: { id: In(updateMenuDto.picturesId) } })
-        const newMenu = await this.menuRepository.save({ ...oldMenu, ...updateMenuDto })
-        return newMenu
+        return await this.menuRepository.save({ ...oldMenu, ...updateMenuDto })
+        
     }
     async deleteMenu(id: number): Promise<DeleteResult> {
-        const deletedMenu = await this.menuRepository.delete(id)
-        return deletedMenu
+        return await this.menuRepository.delete(id)
     }
     async getAllMenu(): Promise<MenuEntity[]> {
-        const menus = await this.menuRepository.find()
-        return menus
+        return await this.menuRepository.find()
     }
     async getOneMenuBy(id: number): Promise<MenuEntity> {
-        const menu = await this.menuRepository.findOneBy({ id })
-        return menu
+        return await this.menuRepository.findOneBy({ id })
     }
     async getMenusBy(menuIds: number[]): Promise<MenuEntity[]> {
-        const menus = await this.menuRepository.findBy({ id: In(menuIds) })
-        return menus
+        return await this.menuRepository.findBy({ id: In(menuIds) })
     }
 
 }
