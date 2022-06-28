@@ -16,7 +16,7 @@ export class UserController {
     @ApiBearerAuth('defaultBearerAuth')
     @UseGuards(AuthGuard)
     @UseGuards(RolesGuard)
-    @Roles(UserRoleTypes.ADMIN)
+    @Roles(UserRoleTypes.ADMIN, UserRoleTypes.MODERATOR)
     @Get('find/:id')
     @ApiParam({ name: 'id' })
     async findUserById(id: string): Promise<UserEntity> {

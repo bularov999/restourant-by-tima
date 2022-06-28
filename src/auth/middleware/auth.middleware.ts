@@ -13,7 +13,7 @@ export class AuthMiddleware implements NestMiddleware {
             next()
             return
         }
-        const token = req.headers.authorization.split(' ')[1].slice(0, -1)
+        const token = req.headers.authorization.split(' ')[1]
         try {
             const decode = verify(token, jwtConstants.secret)
             const user = await this.userService.findOne({where: {id: decode.sub}})
