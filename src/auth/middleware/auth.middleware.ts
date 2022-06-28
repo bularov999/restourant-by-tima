@@ -17,7 +17,6 @@ export class AuthMiddleware implements NestMiddleware {
         try {
             const decode = verify(token, jwtConstants.secret)
             const user = await this.userService.findOne({where: {id: decode.sub}})
-            console.log(user)
             delete user.password
             req.user = user 
             next()

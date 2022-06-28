@@ -1,5 +1,5 @@
 import { UserEntity } from './../../user/entity/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class AuthEntity {
@@ -11,6 +11,10 @@ export class AuthEntity {
     code: number
     @Column()
     expiresIn: Date
+    @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+    createdDateTime: Date;
+    @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
+    lastUpdateDateTime: Date;
     @ManyToOne(() => UserEntity, user => user.auth)
     user: UserEntity
 }

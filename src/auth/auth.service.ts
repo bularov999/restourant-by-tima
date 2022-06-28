@@ -1,3 +1,5 @@
+import { comparePasswordByBcrypt } from './../lib/bcrypt/bcrypt';
+import { AdminAuthDto } from './dto/adminAuthDto.dto';
 import { AuthDto } from './dto/authDto.dto';
 import { EXPIRES_IN_TIME, SPAM_TIME } from './constants/constants';
 import { AuthEntity } from './entity/auth.entity';
@@ -63,7 +65,7 @@ export class AuthService {
             },
             relations: ['user']
         })
-
+        if(!authData) throw ApiError.badRequest('there is no user with that id and code')
         if (Date.now() > authData.expiresIn.getTime()) {
             throw ApiError.forbidden('verify message error')
         }
@@ -92,6 +94,17 @@ export class AuthService {
     }
     calculateExpireInDate(date: number): Date {
         return new Date(date + EXPIRES_IN_TIME)
+    }
+
+    async loginAsAdmin(adminAuthDto: AdminAuthDto) {
+        const admin = await this.userService.findOne({ where: { email: adminAuthDto.email } })
+        if (!admin) throw ApiError.notFound('admin not found')
+        const comparedPassword = comparePasswordByBcrypt(adminAuthDto.password, admin.password)
+        if (!comparedPassword) throw ApiError.badRequest('passwords are not correct')
+        const payload = { username: admin.email, sub: admin.id }
+        return {
+            access_token: this.jwtService.sign(payload)
+        }
     }
 }
 

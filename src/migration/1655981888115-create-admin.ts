@@ -4,7 +4,8 @@ export class createAdmin1655981888115 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `INSERT INTO "user_entity" (id, name, email, phone, password, "created_date_time", role) VALUES (DEFAULT, 'admin' , 'admin@gmail.com', '055505050','$2b$10$si/YO9esKDr6AiHwt9tzTuXZrLSWceKOCbK9iDc7uetPH5EQNrl8W', DEFAULT, 'admin');`,
+      `
+      INSERT INTO "user_entity" (id, name, email, phone, password, "created_date_time", role) VALUES (DEFAULT, 'admin' , 'admin@gmail.com', '055505050','$2a$10$z2m7dVDEFlEELF2ICcAtbuNOM01Dz2lwt7EkoYtZY7YinCDAw2GoW', DEFAULT, 'admin');`,
     );
   }
 

@@ -1,3 +1,4 @@
+import { UserEntity } from 'src/user/entity/user.entity';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv'
@@ -12,7 +13,7 @@ export default new DataSource({
     database: process.env.POSTGRES_DATABASE,
     namingStrategy: new SnakeNamingStrategy(),
     synchronize: true,
-    entities: ["src/**/entity/*.entity{.js}"],
+    entities: ["./src/**/entity/*.entity.js"],
     migrations: ["./src/migration/*.ts"],
     migrationsTableName: "migrations"
 })

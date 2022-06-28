@@ -1,3 +1,4 @@
+import { AdminAuthDto } from './dto/adminAuthDto.dto';
 import { AuthDto } from './dto/authDto.dto';
 import { VerifyMessageDto } from './dto/verifyMessageDto.dto';
 import { ResponseMessageDto } from './dto/responseMessageDto.dto';
@@ -25,5 +26,9 @@ export class AuthController {
         return await this.authService.verifyMessage(verifyMessageDto)
     }
 
+    @Post('admin')
+    async loginAsAdmin(@Body() adminAuthDto: AdminAuthDto) {
+        return await this.authService.loginAsAdmin(adminAuthDto)
+    }
 
 }
