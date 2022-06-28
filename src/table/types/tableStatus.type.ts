@@ -1,4 +1,4 @@
 export enum TableStatusTypes {
-    BOOKED = "BOOKED",
-    AVAILABLE = "AVAILABLE"
+  BOOKED = 'BOOKED',
+  AVAILABLE = 'AVAILABLE',
 }

@@ -1,7 +1,14 @@
-import { AuthEntity } from './../../auth/entity/auth.entity';
-import { BookingEntity } from './../../booking/entity/booking.entity';
-import { UserRoleTypes } from './../types/user-role.types';
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { AuthEntity } from '../../auth/entity/auth.entity';
+import { BookingEntity } from '../../booking/entity/booking.entity';
+import { UserRoleTypes } from '../types/user-role.types';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class UserEntity {
@@ -18,7 +25,7 @@ export class UserEntity {
   name: string;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   password: string;
 
@@ -45,5 +52,5 @@ export class UserEntity {
   booking: UserEntity[];
 
   @OneToMany(() => AuthEntity, (auth) => auth.user)
-  auth: AuthEntity[]
+  auth: AuthEntity[];
 }

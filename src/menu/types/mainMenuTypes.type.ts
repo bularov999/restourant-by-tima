@@ -1,4 +1,3 @@
-
 export enum MainMenuTypes {
   SOUPS = 'soups',
   GARNISHES = 'garnishes',

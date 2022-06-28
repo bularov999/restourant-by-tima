@@ -1,14 +1,21 @@
-import { OrderEntity } from './../../order/entity/order.entity';
-import { PriceEntity } from './../../price/entity/price.entity';
-import { FileEntity } from './../../file/entity/file.entity';
-import { MainMenuTypes } from './../types/mainMenuTypes.type';
-import { MenuTypes } from './../types/menyTypes.type';
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { OrderEntity } from '../../order/entity/order.entity';
+import { PriceEntity } from '../../price/entity/price.entity';
+import { FileEntity } from '../../file/entity/file.entity';
+import { MainMenuTypes } from '../types/mainMenuTypes.type';
+import { MenuTypes } from '../types/menyTypes.type';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class MenuEntity {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column({
     type: 'enum',
@@ -20,7 +27,7 @@ export class MenuEntity {
   @Column({
     type: 'enum',
     enum: MainMenuTypes,
-    default: MainMenuTypes.MAIN_DISHES
+    default: MainMenuTypes.MAIN_DISHES,
   })
   mainMenuType: string;
 
@@ -43,5 +50,5 @@ export class MenuEntity {
   price: PriceEntity[];
 
   @OneToMany(() => OrderEntity, (order) => order.menu)
-  order: OrderEntity[]
+  order: OrderEntity[];
 }

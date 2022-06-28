@@ -1,4 +1,4 @@
 export class VerifyMessageDto {
-    userId: number;
-    code: number;
+  userId: number;
+  code: number;
 }

@@ -1,4 +1,4 @@
 export class ResponseMessageDto {
-    userId: number;
-    code: number;
+  userId: number;
+  code: number;
 }

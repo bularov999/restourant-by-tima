@@ -1,4 +1,4 @@
-import { FileAdapterError } from './../errors/fileAdapter.error';
+import { FileAdapterError } from '../errors/fileAdapter.error';
 import { v4 } from 'uuid';
 import {
   createReadStream,
@@ -18,14 +18,14 @@ export interface FileMeta {
 export class FileAdapter {
   constructor(readonly uploadDir = join('uploads')) {}
 
-  put(buffer: Buffer, meta?: FileMeta): Promise<File> {
+  put(buffer: Buffer): Promise<File> {
     return new Promise((resolve, reject) => {
       if (!buffer) {
         reject(new FileAdapterError('file must be attached'));
       }
       const name = v4();
-      console.log(this.getFilePath(name));
-      const stream = createWriteStream(this.getFilePath(name));
+      console.log(this.getFilePath());
+      const stream = createWriteStream(this.getFilePath());
 
       stream.write(buffer);
       stream.on('open', () => console.log('starting write file ' + name));
@@ -35,7 +35,7 @@ export class FileAdapter {
   }
 
   get(name: string): ReadStream {
-    const path = this.getFilePath(name);
+    const path = this.getFilePath();
     const isExists = existsSync(path);
     if (!isExists || !name) {
       throw new FileAdapterError('file not exist');
@@ -43,12 +43,12 @@ export class FileAdapter {
     return createReadStream(path);
   }
 
-  isExists(name: string): boolean {
-    const path = this.getFilePath(name);
+  isExists(): boolean {
+    const path = this.getFilePath();
     return existsSync(path);
   }
 
-  getFilePath(name: string) {
+  getFilePath() {
     return join(__dirname, '..', '..', 'uploads');
   }
 }

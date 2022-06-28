@@ -5,8 +5,8 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService)
-  const port = configService.get('PORT')
+  const configService = app.get(ConfigService);
+  const port = configService.get('PORT');
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Restourant')
     .setDescription('restourant app')
@@ -16,10 +16,10 @@ async function bootstrap() {
       { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', in: 'headers' },
       'access-token',
     )
-    .build()
-    const document = SwaggerModule.createDocument(app, swaggerConfig)
-    SwaggerModule.setup('api', app, document)
-  console.log(port)
+    .build();
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api', app, document);
+  console.log(port);
   await app.listen(port);
 }
 bootstrap();
