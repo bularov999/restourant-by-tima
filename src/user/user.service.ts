@@ -1,9 +1,8 @@
-
+import { AuthDto } from './../auth/dto/authDto.dto';
 import { UserEntity } from './entity/user.entity';
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from 'typeorm';
-import { RegistrationDto } from 'src/auth/dto/regisration.dto';
 
 @Injectable()
 export class UserService {
@@ -12,8 +11,8 @@ export class UserService {
     async findOne(data: any): Promise<UserEntity> {
         return  await this.userRepository.findOne(data)
     }
-    async createUser(registrationDto: RegistrationDto): Promise<UserEntity> {
-        const newUser =  this.userRepository.create(registrationDto)
+    async createUser(authDto: AuthDto): Promise<UserEntity> {
+        const newUser =  this.userRepository.create(authDto)
         return await this.userRepository.save(newUser)
     }
     async findAllUsers(): Promise<UserEntity[]> {

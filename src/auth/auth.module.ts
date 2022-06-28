@@ -1,3 +1,4 @@
+import { AuthEntity } from './entity/auth.entity';
 import { UserService } from './../user/user.service';
 import { UserEntity } from './../user/entity/user.entity';
 import { AuthService } from './auth.service';
@@ -10,6 +11,7 @@ import { jwtConstants } from './constants/constants';
 
 @Module({
     imports: [
+        TypeOrmModule.forFeature([AuthEntity]),
         UserModule,
         JwtModule.register({
             secret: jwtConstants.secret,
