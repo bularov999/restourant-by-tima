@@ -1,4 +1,4 @@
-import { FileAdapterError } from '../errors/fileAdapter.error';
+import { FileAdapterError } from './../errors/fileAdapter.error';
 import { v4 } from 'uuid';
 import {
   createReadStream,
@@ -18,14 +18,30 @@ export interface FileMeta {
 export class FileAdapter {
   constructor(readonly uploadDir = join('uploads')) {}
 
-  put(buffer: Buffer): Promise<File> {
+  create(buffer: Buffer): Promise<File> {
     return new Promise((resolve, reject) => {
       if (!buffer) {
         reject(new FileAdapterError('file must be attached'));
       }
+      console.log();
       const name = v4();
-      console.log(this.getFilePath());
-      const stream = createWriteStream(this.getFilePath());
+      console.log(this.getFilePath(name));
+      const stream = createWriteStream(this.getFilePath(name));
+
+      stream.write(buffer);
+      stream.on('open', () => console.log('starting write file ' + name));
+      stream.on('error', (e) => reject(new FileAdapterError(e.message)));
+      stream.on('ready', () => resolve({ name }));
+    });
+  }
+
+  put(buffer: Buffer, name: string): Promise<File> {
+    return new Promise((resolve, reject) => {
+      if (!buffer) {
+        reject(new FileAdapterError('file must be attached'));
+      }
+      console.log(this.getFilePath(name));
+      const stream = createWriteStream(this.getFilePath(name));
 
       stream.write(buffer);
       stream.on('open', () => console.log('starting write file ' + name));
@@ -35,7 +51,7 @@ export class FileAdapter {
   }
 
   get(name: string): ReadStream {
-    const path = this.getFilePath();
+    const path = this.getFilePath(name);
     const isExists = existsSync(path);
     if (!isExists || !name) {
       throw new FileAdapterError('file not exist');
@@ -43,13 +59,13 @@ export class FileAdapter {
     return createReadStream(path);
   }
 
-  isExists(): boolean {
-    const path = this.getFilePath();
+  isExists(name: string): boolean {
+    const path = this.getFilePath(name);
     return existsSync(path);
   }
 
-  getFilePath() {
-    return join(__dirname, '..', '..', 'uploads');
+  getFilePath(name: string) {
+    return join(__dirname, '..', '..', 'uploads') + name;
   }
 }
 const fileAdapter = new FileAdapter('uploads');

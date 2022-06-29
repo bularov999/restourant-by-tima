@@ -1,6 +1,6 @@
 import { MenuEntity } from '../../menu/entity/menu.entity';
 import {
-  AfterLoad,
+  AfterInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -30,7 +30,7 @@ export class FileEntity {
 
   url: string;
 
-  @AfterLoad()
+  @AfterInsert()
   genUrl() {
     this.url = this.id;
   }

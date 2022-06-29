@@ -18,7 +18,7 @@ export class FileService {
     if (!file) {
       throw ApiError.badRequest('file must be attached');
     }
-    const result = await fileAdapter.put(file.buffer);
+    const result = await fileAdapter.create(file.buffer);
     const data = new CreateFileDto();
     console.log('result', result);
     data.id = result.name;
@@ -35,7 +35,7 @@ export class FileService {
     }
     try {
       const instance = await this.fileRepository.findOneBy({ id: name });
-      await fileAdapter.put(file.buffer, { name });
+      await fileAdapter.put(file.buffer, name);
       instance.size = file.size;
       instance.contentType = file.mimetype;
       const fileEntity = await this.fileRepository.findOneBy({
@@ -50,10 +50,11 @@ export class FileService {
     }
   }
   async findFilesById(query): Promise<FileEntity[]> {
-    return await this.fileRepository.find(query);
+    const files = await this.fileRepository.find(query);
+    return files;
   }
   get(name: string): ReadStream {
-    const isExists = fileAdapter.isExists();
+    const isExists = fileAdapter.isExists(name);
     if (!isExists) {
       throw ApiError.notFound('file not found');
     }

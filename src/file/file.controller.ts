@@ -1,20 +1,15 @@
-import { UserRoleTypes } from '../user/types/user-role.types';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { AuthGuard } from 'src/auth/guards/authGuard.guard';
 import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
   Res,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from './file.service';
-import { Roles } from 'src/common/decorators/roles.decorator';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('file')
@@ -23,9 +18,6 @@ export class FileController {
   @ApiTags('File controller')
   @ApiOperation({ summary: 'upload file' })
   @ApiBearerAuth('defaultBearerAuth')
-  @UseGuards(AuthGuard)
-  @UseGuards(RolesGuard)
-  @Roles(UserRoleTypes.ADMIN)
   @Post('create')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
@@ -35,10 +27,7 @@ export class FileController {
   @ApiTags('File controller')
   @ApiOperation({ summary: 'updating file' })
   @ApiBearerAuth('defaultBearerAuth')
-  @UseGuards(AuthGuard)
-  @UseGuards(RolesGuard)
-  @Roles(UserRoleTypes.ADMIN)
-  @Put(':name')
+  @Patch('update/:name')
   @UseInterceptors(FileInterceptor('file'))
   async updateFile(
     @Param('name') name: string,
@@ -49,9 +38,6 @@ export class FileController {
   @ApiTags('File controller')
   @ApiOperation({ summary: 'get File' })
   @ApiBearerAuth('defaultBearerAuth')
-  @UseGuards(AuthGuard)
-  @UseGuards(RolesGuard)
-  @Roles(UserRoleTypes.ADMIN)
   @Get(':name')
   async getFile(@Param('name') name: string, @Res() res) {
     const file = this.service.get(name);
