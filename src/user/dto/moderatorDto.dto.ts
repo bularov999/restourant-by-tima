@@ -1,14 +1,14 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class ModeratorDto {
-  @ApiProperty({example: 'tima@gmail.com'})
+  @ApiProperty({ example: 'tima@gmail.com' })
   email: string;
-  @ApiProperty({example: '05555555'})
+  @ApiProperty({ example: '05555555' })
   phone: string;
-  @ApiProperty({example: 'Tima'})
+  @ApiProperty({ example: 'Tima' })
   name: string;
-  @ApiProperty({example: '12345'})
+  @ApiProperty({ example: '12345' })
   password: string;
-  @ApiProperty({example: 'moderator'})
+  @ApiProperty({ example: 'moderator' })
   role: string;
 }

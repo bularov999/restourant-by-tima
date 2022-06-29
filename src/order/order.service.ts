@@ -3,7 +3,7 @@ import { CreateOrderDto } from './dto/createOrderDto.dto';
 import { OrderEntity } from './entity/order.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 
 @Injectable()
 export class OrderService {
@@ -77,5 +77,8 @@ export class OrderService {
         price: true,
       },
     });
+  }
+  async deleteOrder(orderid: number): Promise<DeleteResult> {
+    return await this.orderRepository.delete({ id: orderid });
   }
 }

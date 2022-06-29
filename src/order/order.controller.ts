@@ -1,7 +1,7 @@
 import { UpdateOrderDto } from './dto/updateOrderDto';
 import { CreateOrderDto } from './dto/createOrderDto.dto';
 import { OrderService } from './order.service';
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -9,6 +9,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+import { DeleteResult } from 'typeorm';
 
 @Controller('order')
 export class OrderController {
@@ -36,5 +37,13 @@ export class OrderController {
     @Body() updateOrderDto: UpdateOrderDto[],
   ) {
     return await this.orderService.updateOrder(updateOrderDto, bookingId);
+  }
+  @ApiTags('Order controller')
+  @ApiOperation({ summary: 'delete Order' })
+  @ApiBearerAuth('defaultBearerAuth')
+  @ApiParam({ name: 'orderId' })
+  @Delete('delete/:orderId')
+  async deleteOrder(@Param('orderId') orderId: number): Promise<DeleteResult> {
+    return await this.orderService.deleteOrder(orderId);
   }
 }

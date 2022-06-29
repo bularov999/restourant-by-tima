@@ -12,7 +12,7 @@ async function bootstrap() {
     .setDescription('restourant app')
     .setVersion('1.0')
     .addTag('restourant')
-    .addBearerAuth( )
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
