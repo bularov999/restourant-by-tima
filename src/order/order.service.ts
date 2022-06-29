@@ -1,17 +1,26 @@
+import { ApiError } from './../lib/errors/api.error';
+import { BookingService } from './../booking/booking.service';
 import { UpdateOrderDto } from './dto/updateOrderDto';
 import { CreateOrderDto } from './dto/createOrderDto.dto';
 import { OrderEntity } from './entity/order.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult } from 'typeorm';
+import { ResponseOrderCountAndPriceDto } from './dto/responseOrderCountAndPriceDto.dto';
 
 @Injectable()
 export class OrderService {
   constructor(
     @InjectRepository(OrderEntity)
     private readonly orderRepository: Repository<OrderEntity>,
-  ) {}
-  async createOrder(createOrderDto: CreateOrderDto[], bookingId: number) {
+    private readonly bookingService: BookingService
+  ) { }
+  async createOrder(
+    createOrderDto: CreateOrderDto[],
+    bookingId: number,
+  ): Promise<ResponseOrderCountAndPriceDto> {
+    const booking = await this.bookingService.getOneBookingById(bookingId);
+    if (!booking) throw ApiError.notFound('this booking was not found');
     const instances = createOrderDto.map((dto) =>
       this.orderRepository.create({
         menu: {
@@ -40,7 +49,10 @@ export class OrderService {
 
     return obj;
   }
-  async updateOrder(updateOrderDto: UpdateOrderDto[], bookingId: number) {
+  async updateOrder(
+    updateOrderDto: UpdateOrderDto[],
+    bookingId: number,
+  ): Promise<ResponseOrderCountAndPriceDto> {
     const instances = updateOrderDto.map((dto) =>
       this.orderRepository.create({
         id: dto.orderId,

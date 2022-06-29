@@ -1,3 +1,4 @@
+import { TableService } from './../table/table.services';
 import { UserEntity } from 'src/user/entity/user.entity';
 import { BookingStatusTypes } from './types/booking.types';
 import { ApiError } from '../lib/errors/api.error';
@@ -12,15 +13,18 @@ export class BookingService {
   constructor(
     @InjectRepository(BookingEntity)
     private readonly bookingRepository: Repository<BookingEntity>,
+    private readonly tableService: TableService,
   ) {}
 
   async createBooking(
     user: UserEntity,
     bookingDto: BookingDto,
   ): Promise<BookingEntity> {
+    const table = await this.tableService.getOneTable(bookingDto.tableId);
+    if (!table) throw ApiError.notFound('this table is not exist');
     const booking = this.bookingRepository.create(bookingDto);
     booking.user = user;
-    booking.table = bookingDto.table;
+    booking.table.id = bookingDto.tableId;
     return await this.bookingRepository.save(booking);
   }
   async denieBooking(id: number): Promise<UpdateResult> {
@@ -59,5 +63,8 @@ export class BookingService {
       { id: bookingId },
       { paidStatus: BookingPaidStatusType.PAID },
     );
+  }
+  async getOneBookingById(bookingId: number): Promise<BookingEntity> {
+    return await this.bookingRepository.findOneBy({id: bookingId})
   }
 }

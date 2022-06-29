@@ -1,3 +1,7 @@
+import { TableEntity } from './../table/entity/table.entity';
+import { TableService } from './../table/table.services';
+import { BookingEntity } from './../booking/entity/booking.entity';
+import { BookingService } from './../booking/booking.service';
 import { FileEntity } from '../file/entity/file.entity';
 import { FileService } from '../file/file.service';
 import { MenuEntity } from '../menu/entity/menu.entity';
@@ -17,9 +21,11 @@ import { Module } from '@nestjs/common';
       PriceEntity,
       MenuEntity,
       FileEntity,
+      BookingEntity,
+      TableEntity
     ]),
   ],
-  providers: [OrderService, PriceService, MenuService, FileService],
+  providers: [OrderService, PriceService, MenuService, FileService, BookingService, TableService],
   controllers: [OrderController],
 })
 export class OrderModule {}

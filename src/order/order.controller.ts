@@ -1,3 +1,4 @@
+import { ResponseOrderCountAndPriceDto } from './dto/responseOrderCountAndPriceDto.dto';
 import { UpdateOrderDto } from './dto/updateOrderDto';
 import { CreateOrderDto } from './dto/createOrderDto.dto';
 import { OrderService } from './order.service';
@@ -23,7 +24,7 @@ export class OrderController {
   async createOrder(
     @Param('bookingId') bookingId: number,
     @Body() createOrderDto: CreateOrderDto[],
-  ) {
+  ): Promise<ResponseOrderCountAndPriceDto> {
     return await this.orderService.createOrder(createOrderDto, bookingId);
   }
   @ApiTags('Order controller')
@@ -35,7 +36,7 @@ export class OrderController {
   async updateOrder(
     @Param('bookingId') bookingId: number,
     @Body() updateOrderDto: UpdateOrderDto[],
-  ) {
+  ): Promise<ResponseOrderCountAndPriceDto> {
     return await this.orderService.updateOrder(updateOrderDto, bookingId);
   }
   @ApiTags('Order controller')
