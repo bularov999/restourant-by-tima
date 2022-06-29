@@ -41,4 +41,10 @@ export class TableService {
       ...updateTableDto,
     });
   }
+  async getAllTables(): Promise<TableEntity[]> {
+    return await this.tableRepository.find();
+  }
+  async getOneTable(tableId: number): Promise<TableEntity> {
+    return await this.tableRepository.findOneBy({ id: tableId });
+  }
 }

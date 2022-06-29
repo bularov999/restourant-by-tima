@@ -1,3 +1,4 @@
+import { BookingPaidStatusType } from './../types/bookingPaidStatus.types';
 import { OrderEntity } from '../../order/entity/order.entity';
 import { TableEntity } from '../../table/entity/table.entity';
 import { BookingStatusTypes } from '../types/booking.types';
@@ -22,6 +23,13 @@ export class BookingEntity {
 
   @Column({ type: 'timestamptz' })
   dateTime: Date;
+
+  @Column({
+    type: 'enum',
+    enum: BookingPaidStatusType,
+    default: BookingPaidStatusType.UNPAID,
+  })
+  paidStatus: BookingPaidStatusType;
 
   @Column({
     type: 'enum',

@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateTableDto {
-  @ApiProperty({ name: '1' })
+  @ApiProperty({example: 1})
   id: number;
-  @ApiProperty({ name: 'b' })
+  @ApiProperty({example: 'a'})
   group: string;
-  @ApiProperty({ name: '1' })
+  @ApiProperty({example: 2})
   index: number;
-  @ApiProperty({ name: '5' })
+  @ApiProperty({example: 12})
   seatsCount: number;
 }

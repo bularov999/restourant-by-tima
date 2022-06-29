@@ -6,11 +6,12 @@ import { BookingEntity } from './entity/booking.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { BookingPaidStatusType } from './types/bookingPaidStatus.types';
 Injectable();
 export class BookingService {
   constructor(
     @InjectRepository(BookingEntity)
-    private bookingRepository: Repository<BookingEntity>,
+    private readonly bookingRepository: Repository<BookingEntity>,
   ) {}
 
   async createBooking(
@@ -52,5 +53,11 @@ export class BookingService {
     return await this.bookingRepository.find({
       where: { user: { id: userId } },
     });
+  }
+  async changeBookingPaidStatus(bookingId: number) {
+    return await this.bookingRepository.update(
+      { id: bookingId },
+      { paidStatus: BookingPaidStatusType.PAID },
+    );
   }
 }

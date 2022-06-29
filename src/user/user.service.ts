@@ -1,3 +1,4 @@
+import { UpdateUserDto } from './dto/updateUserDto.dto';
 import { UserRoleTypes } from './types/user-role.types';
 import { hashPasswordByBcrypt } from '../lib/bcrypt/bcrypt';
 import { ApiError } from '../lib/errors/api.error';
@@ -33,5 +34,17 @@ export class UserService {
     moderatorDto.role = UserRoleTypes.MODERATOR;
     const moderatorInstance = this.userRepository.create(moderatorDto);
     return await this.userRepository.save(moderatorInstance);
+  }
+  async getMe(userId: number): Promise<UserEntity> {
+    return await this.userRepository.findOneBy({ id: userId });
+  }
+  async updateUser(userId: number, updateUserDto: UpdateUserDto) {
+    return await this.userRepository.update(
+      { id: userId },
+      {
+        name: updateUserDto.name,
+        email: updateUserDto.email,
+      },
+    );
   }
 }

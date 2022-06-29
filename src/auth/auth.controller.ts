@@ -27,7 +27,9 @@ export class AuthController {
   ): Promise<ResponseAccessTokenDto> {
     return await this.authService.verifyMessage(verifyMessageDto);
   }
-
+  @ApiTags('auth')
+  @ApiOperation({ summary: 'login as a admin or moderator' })
+  @ApiBody({ type: AdminAuthDto })
   @Post('admin')
   async loginAsAdmin(@Body() adminAuthDto: AdminAuthDto) {
     return await this.authService.loginAsAdmin(adminAuthDto);

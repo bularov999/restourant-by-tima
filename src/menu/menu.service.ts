@@ -44,4 +44,15 @@ export class MenuService {
   async getMenusBy(menuIds: number[]): Promise<MenuEntity[]> {
     return await this.menuRepository.findBy({ id: In(menuIds) });
   }
+  async getMenusByType(menuType: string, mainMenuType?: string) {
+    if (mainMenuType) {
+      return await this.menuRepository.find({
+        where: {
+          type: menuType,
+          mainMenuType: mainMenuType,
+        },
+      });
+    }
+    return await this.menuRepository.find({ where: { type: menuType } });
+  }
 }

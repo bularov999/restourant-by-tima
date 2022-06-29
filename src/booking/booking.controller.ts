@@ -97,4 +97,15 @@ export class BookingController {
   async deleteBooking(@Param('id') bookingId: number): Promise<DeleteResult> {
     return await this.bookingService.deleteBooking(bookingId);
   }
+
+  @ApiTags('booking')
+  @ApiOperation({ summary: 'change paid status to paid (ADMIN)' })
+  @ApiBearerAuth('defaultBearerAuth')
+  @UseGuards(AuthGuard)
+  @UseGuards(RolesGuard)
+  @Roles(UserRoleTypes.ADMIN)
+  @Put('paid-status-update/:bookingId')
+  async changeBookingPaidStatus(@Param('bookingId') bookingId: number) {
+    return await this.bookingService.changeBookingPaidStatus(bookingId);
+  }
 }

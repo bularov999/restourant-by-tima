@@ -8,9 +8,11 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { MenuEntity } from './entity/menu.entity';
@@ -60,5 +62,16 @@ export class MenuController {
   @ApiParam({ name: 'id' })
   async deleteMenu(@Param('id') menuId: number) {
     return await this.menuService.deleteMenu(menuId);
+  }
+
+  @ApiTags('Menu controller')
+  @ApiOperation({ summary: 'get menu by type and mainMenuType' })
+  @ApiBearerAuth('defaultBearerAuth')
+  @Get('get-menu?')
+  async getMenusByType(
+    @Query('menuType') menuType: string,
+    @Query('mainMenuType') mainMenuType: string,
+  ) {
+    return await this.menuService.getMenusByType(menuType, mainMenuType);
   }
 }

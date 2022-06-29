@@ -10,6 +10,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   UseGuards,
@@ -82,5 +83,13 @@ export class TableController {
   @ApiParam({ name: 'id' })
   async unblock(@Param('id') tableId: number): Promise<UpdateResult> {
     return await this.tableService.unblockTable(tableId);
+  }
+  @ApiTags('Table Controller')
+  @ApiOperation({ summary: 'get all tables and statuses' })
+  @ApiBearerAuth('defaultBearerAuth')
+  @UseGuards(AuthGuard)
+  @Get('get-all')
+  async getAllTables(): Promise<TableEntity[]> {
+    return await this.tableService.getAllTables();
   }
 }

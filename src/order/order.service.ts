@@ -1,3 +1,4 @@
+import { UpdateOrderDto } from './dto/updateOrderDto';
 import { CreateOrderDto } from './dto/createOrderDto.dto';
 import { OrderEntity } from './entity/order.entity';
 import { Injectable } from '@nestjs/common';
@@ -31,17 +32,45 @@ export class OrderService {
     const obj = {
       count: 0,
       price: 0,
-      size: 0,
     };
     allOrders.forEach((item) => {
       obj.count += item.count;
-      obj.price += item.price.price;
-      obj.size += item.price.size;
+      obj.price += item.price.price * item.count;
     });
+
     return obj;
   }
+  async updateOrder(updateOrderDto: UpdateOrderDto[], bookingId: number) {
+    const instances = updateOrderDto.map((dto) =>
+      this.orderRepository.create({
+        id: dto.orderId,
+        menu: {
+          id: dto.menuId,
+        },
+        price: {
+          id: dto.priceId,
+        },
+        booking: {
+          id: bookingId,
+        },
+        count: dto.count,
+      }),
+    );
+    await this.orderRepository.save(instances);
 
-  async getOrdersByBooking(bookingId) {
+    const allOrders = await this.getOrdersByBooking(bookingId);
+    const obj = {
+      count: 0,
+      price: 0,
+    };
+    allOrders.forEach((item) => {
+      obj.count += item.count;
+      obj.price += item.price.price * item.count;
+    });
+
+    return obj;
+  }
+  async getOrdersByBooking(bookingId: number): Promise<OrderEntity[]> {
     return await this.orderRepository.find({
       where: { booking: { id: bookingId } },
       relations: {

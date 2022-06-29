@@ -12,10 +12,7 @@ async function bootstrap() {
     .setDescription('restourant app')
     .setVersion('1.0')
     .addTag('restourant')
-    .addBearerAuth(
-      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', in: 'headers' },
-      'access-token',
-    )
+    .addBearerAuth( )
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);

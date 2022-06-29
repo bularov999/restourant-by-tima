@@ -1,3 +1,4 @@
+import { ApiError } from './../lib/errors/api.error';
 import { MenuService } from '../menu/menu.service';
 import { UpdateOnePriceDto } from './dto/updateOnePriceDto.dto';
 import { CreatePriceDto } from './dto/createPriceDto.dto';
@@ -19,6 +20,7 @@ export class PriceService {
     menuId: number,
   ): Promise<PriceEntity[]> {
     const menu = await this.menuService.getOneMenuBy(menuId);
+    if (!menu) throw ApiError.badRequest('menuId doesnt find');
     const instance = this.priceRepository.create(createPriceDto);
     const newInstace = instance.map((item) => {
       return { ...item, menu };

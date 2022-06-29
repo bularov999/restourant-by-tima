@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTableDto {
-  @ApiProperty({ name: 'b' })
+  @ApiProperty({ example: 'b'})
   group: string;
-  @ApiProperty({ name: '1' })
+  @ApiProperty({example: 1})
   index: number;
-  @ApiProperty({ name: '5' })
+  @ApiProperty({example: 5})
   seatsCount: number;
 }
