@@ -53,18 +53,18 @@ export class BookingService {
   async getAllBookings(): Promise<BookingEntity[]> {
     return await this.bookingRepository.find();
   }
-  async getBookingByUserId(userId: number) {
+  async getBookingByUserId(userId: number): Promise<BookingEntity[]> {
     return await this.bookingRepository.find({
       where: { user: { id: userId } },
     });
   }
-  async changeBookingPaidStatus(bookingId: number) {
+  async changeBookingPaidStatus(bookingId: number): Promise<UpdateResult> {
     return await this.bookingRepository.update(
       { id: bookingId },
       { paidStatus: BookingPaidStatusType.PAID },
     );
   }
   async getOneBookingById(bookingId: number): Promise<BookingEntity> {
-    return await this.bookingRepository.findOneBy({id: bookingId})
+    return await this.bookingRepository.findOneBy({ id: bookingId });
   }
 }

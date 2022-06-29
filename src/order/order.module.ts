@@ -22,10 +22,17 @@ import { Module } from '@nestjs/common';
       MenuEntity,
       FileEntity,
       BookingEntity,
-      TableEntity
+      TableEntity,
     ]),
   ],
-  providers: [OrderService, PriceService, MenuService, FileService, BookingService, TableService],
+  providers: [
+    OrderService,
+    PriceService,
+    MenuService,
+    FileService,
+    BookingService,
+    TableService,
+  ],
   controllers: [OrderController],
 })
 export class OrderModule {}

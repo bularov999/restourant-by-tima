@@ -8,6 +8,6 @@ import { Module } from '@nestjs/common';
   imports: [TypeOrmModule.forFeature([TableEntity])],
   providers: [TableService],
   controllers: [TableController],
-  exports: [TableService]
+  exports: [TableService],
 })
 export class TableModule {}

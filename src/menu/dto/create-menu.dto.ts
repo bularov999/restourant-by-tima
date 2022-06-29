@@ -2,6 +2,7 @@ import { MainMenuTypes } from '../types/mainMenuTypes.type';
 import { MenuTypes } from '../types/menyTypes.type';
 import { FileEntity } from '../../file/entity/file.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty } from 'class-validator';
 export class CreateMenuDto {
   @ApiProperty({ example: 'menu' })
   type: MenuTypes;
@@ -11,7 +12,9 @@ export class CreateMenuDto {
   pictureIds: string[];
   pictures?: FileEntity[];
   @ApiProperty({ example: 'hash' })
+  @IsNotEmpty()
   name: string;
   @ApiProperty({ example: 'description' })
+  @IsNotEmpty()
   description: string;
 }

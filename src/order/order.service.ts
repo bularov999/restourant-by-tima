@@ -13,8 +13,8 @@ export class OrderService {
   constructor(
     @InjectRepository(OrderEntity)
     private readonly orderRepository: Repository<OrderEntity>,
-    private readonly bookingService: BookingService
-  ) { }
+    private readonly bookingService: BookingService,
+  ) {}
   async createOrder(
     createOrderDto: CreateOrderDto[],
     bookingId: number,
